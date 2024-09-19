@@ -14,7 +14,7 @@ func parseCategoriesThree(category2 categoryTwo) ([]categoryThree, error) {
 	c := colly.NewCollector()
 
 	var categories []categoryThree
-	c.OnHTML("#content > table[class=nobrd] > tbody > tr > td > a", func(e *colly.HTMLElement) {
+	c.OnHTML("table[class=nobrd] > tbody > tr > td > a", func(e *colly.HTMLElement) {
 		category3ParentName := e.DOM.Parent().Parent().Parent().Parent().Prev().Prev().Prev().Text()
 		category3Href, _ := e.DOM.Attr("href")
 		if len(category3Href) > 0 && category3Href[0] != '/' {

@@ -10,6 +10,7 @@ type product struct {
 	categoryThree
 	imageLink string
 	price     int
+	sku       string
 }
 
 // https://www.deal-med.ru/rabochee_mesto_oftalmologa_stern_talmo.html
@@ -23,11 +24,13 @@ func parseCategoriesProduct(category3 categoryThree) (product, error) {
 		priceString = standardizeSpaces(priceString)
 		priceString = strings.ReplaceAll(priceString, " ", "")
 		price, _ := strconv.Atoi(priceString)
+		sku := e.DOM.Find("div#artik").Text()
 
 		prod = product{
 			categoryThree: category3,
 			imageLink:     prodImageLink,
 			price:         price,
+			sku:           sku,
 		}
 	})
 

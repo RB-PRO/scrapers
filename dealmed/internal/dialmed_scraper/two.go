@@ -15,18 +15,23 @@ func parseCategoriesTwo(category1 categoryOne) ([]categoryTwo, error) {
 	c := colly.NewCollector()
 
 	var categories []categoryTwo
-	c.OnHTML("#content > table > tbody > tr > td > div > strong > a", func(e *colly.HTMLElement) {
-		category2href, _ := e.DOM.Attr("href")
-		category2name := e.DOM.Text()
-		if category2name != "" {
-			category2 := categoryTwo{
-				categoryOne: category1,
-				name:        standardizeSpaces(category2name),
-				link:        category2href,
-			}
-
-			categories = append(categories, category2)
+	c.OnHTML("table > tbody > tr > td > div > strong > a", func(e *colly.HTMLElement) {
+		category2Href, _ := e.DOM.Attr("href")
+		if len(category2Href) > 0 && category2Href[0] != '/' {
+			category2Href = "/" + category2Href
 		}
+		category2name := e.DOM.Text()
+		if category2name == "" {
+			return
+		}
+
+		category2 := categoryTwo{
+			categoryOne: category1,
+			name:        standardizeSpaces(category2name),
+			link:        category2Href,
+		}
+
+		categories = append(categories, category2)
 	})
 	if err := c.Visit(URL + category1.link); err != nil {
 		return nil, err

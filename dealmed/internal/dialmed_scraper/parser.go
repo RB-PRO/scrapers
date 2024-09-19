@@ -28,7 +28,7 @@ func parse() ([]product, error) {
 
 	var categories2 []categoryTwo
 	for i, category1 := range categories1 {
-		fmt.Printf("[%d/%d]: 1\n", i+1, len(categories1))
+		fmt.Printf("1: [%d/%d] %s\n", i+1, len(categories1), URL+category1.link)
 		c2, err := parseCategoriesTwo(category1)
 		if err != nil {
 			return nil, err
@@ -39,7 +39,7 @@ func parse() ([]product, error) {
 
 	var categories3 []categoryThree
 	for i, category2 := range categories2 {
-		fmt.Printf("[%d/%d]: 2\n", i+1, len(categories2))
+		fmt.Printf("2: [%d/%d] %s\n", i+1, len(categories2), URL+category2.link)
 		c3, err := parseCategoriesThree(category2)
 		if err != nil {
 			return nil, err
@@ -50,10 +50,11 @@ func parse() ([]product, error) {
 
 	var products []product
 	for i, category3 := range categories3 {
-		fmt.Printf("[%d/%d]: 3\n", i+1, len(categories3))
+		fmt.Printf("3: [%d/%d] %s\n", i+1, len(categories3), URL+category3.link)
 		prod, err := parseCategoriesProduct(category3)
 		if err != nil {
-			return nil, err
+			fmt.Println(err)
+			//return nil, err
 		}
 		products = append(products, prod)
 		time.Sleep(time.Millisecond * 200)
